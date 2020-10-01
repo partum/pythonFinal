@@ -26,5 +26,15 @@ async def on_ready(): # this makes the Client wait untill it is ready for action
         print(f'- {member.name}')
 
 
+#from https://www.devdungeon.com/content/make-discord-bot-python
+@client.event # reply to !hello with hello @thatPerson
+async def on_message(message):
+    # we do not want the bot to reply to itself
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('!hello'):
+        msg = 'Hello {0.author.mention} :grinning:'.format(message)
+        await message.channel.send(msg)
 
 client.run(TOKEN)
