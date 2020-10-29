@@ -57,6 +57,16 @@ async def on_message(message): #any action that is a respose to a message should
         response = random.choice(funFacts)
         await message.channel.send(response)
 
+    #random image
+    my_file = open("pictures.txt", "r")
+    content = my_file.read()
+    doggies = content.split("\n")
+    my_file.close()
+
+    if message.content == '!dogo':
+        response = random.choice(doggies)
+        await message.channel.send(response) 
+
     # create a poll
     if message.content.startswith("!poll"):
         # await client.send_message(message.channel, message.content[3:])
@@ -133,6 +143,6 @@ async def on_message(message): #any action that is a respose to a message should
                 j += 1
             else:
                 quit()
-            
+       
 
 client.run(TOKEN)
