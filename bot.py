@@ -34,11 +34,11 @@ async def on_member_join(member):
 
 
 #from https://www.devdungeon.com/content/make-discord-bot-python
-@client.event # reply to !hello with hello @thatPerson
-async def on_message(message):
-    # we do not want the bot to reply to itself
+@client.event
+async def on_message(message): #any action that is a respose to a message should go under here
+    '''# we do not want the bot to reply to itself
     if message.author == client.user:
-        return
+        return'''
 
     if message.content.startswith('!hello'):
         msg = 'Hello {0.author.mention} :grinning:'.format(message)
@@ -53,10 +53,86 @@ async def on_message(message):
         'Armadillo shells are bulletproof',
     ]
 
-    if message.content == 'funfacts!':
+    if message.content == 'funfact!':
         response = random.choice(funFacts)
         await message.channel.send(response)
 
+    # create a poll
+    if message.content.startswith("!poll"):
+        # await client.send_message(message.channel, message.content[3:])
+        userInput = message.content[5:]
+        splitQuestion = userInput.split('?')
+        splitAnswers = splitQuestion[1].split( )
+        await message.channel.send(splitQuestion[0]+'?\n')
+        j = 1
+        for i in splitAnswers:
+            if j == 1:
+                msg = await message.channel.send(":one: " + splitAnswers[j-1])
+                j += 1
+            elif j == 2:
+                msg = await message.channel.send(":two: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 3:
+                msg = await message.channel.send(":three: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 4:
+                msg = await message.channel.send(":four: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 5:
+                msg = await message.channel.send(":five: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 6:
+                msg = await message.channel.send(":six: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 7:
+                msg = await message.channel.send(":seven: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 8:
+                msg = await message.channel.send(":eight: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 9:
+                msg = await message.channel.send(":nine: "+ splitAnswers[j-1])
+                j += 1
+            elif j == 10:
+                msg = await message.channel.send(":keycap_ten: "+ splitAnswers[j-1])
+                j += 1
+            else:
+                quit() 
 
+        j = 1
+        for i in splitAnswers:
+            if j == 1:
+                await msg.add_reaction('1️⃣')
+                j += 1
+            elif j == 2:
+                await msg.add_reaction('2️⃣')
+                j += 1
+            elif j == 3:
+                await msg.add_reaction('3️⃣')
+                j += 1
+            elif j == 4:
+                await msg.add_reaction('4️⃣')
+                j += 1
+            elif j == 5:
+                await msg.add_reaction('5️⃣')
+                j += 1
+            elif j == 6:
+                await msg.add_reaction('6️⃣')
+                j += 1
+            elif j == 7:
+                await msg.add_reaction('7️⃣')
+                j += 1
+            elif j == 8:
+                await msg.add_reaction('8️⃣')
+                j += 1
+            elif j == 9:
+                await msg.add_reaction('9️⃣')
+                j += 1
+            elif j == 10:
+                await msg.add_reaction('🔟')
+                j += 1
+            else:
+                quit()
+            
 
 client.run(TOKEN)
