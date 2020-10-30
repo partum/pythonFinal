@@ -15,13 +15,10 @@ bot = commands.Bot(command_prefix='!')
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
-# creates the image list
-
-
 # return random image of dog (from list)
 @bot.command(name='dogo', help='Returns a random picture of a dog')
 async def dog_pic(ctx):
-    # it would be better if I could figure out how to pass doggies to the command instead of creating the list everytime
+    # it would be better if I could figure out how to pass doggies to the command instead of creating the list everytime 🤷
     my_file = open("pictures.txt", "r")
     content = my_file.read()
     doggies = content.split("\n")
@@ -29,22 +26,7 @@ async def dog_pic(ctx):
     response = random.choice(doggies)
     await ctx.send(response) 
 
-# example command. Delete later.
-@bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
-async def nine_nine(ctx):
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
-    ]
-
-    response = random.choice(brooklyn_99_quotes)
-    await ctx.send(response)
-
-# reply hello [name] 
+# reply hello @[name] 
 @bot.command(name='hello', help='Responds with a greeting')
 async def hello(ctx):
     response = 'Hello ' + str(ctx.author.mention) + ' :wave:'
@@ -64,100 +46,34 @@ async def fun_fact(ctx):
     response = random.choice(funFacts)
     await ctx.send(response)
 
+# poll
+@bot.command(name='poll', help='Create a poll. End you question with a "?" and put a " " between options (up to 10.)')
+async def poll(ctx):
+    emojiList = [
+       '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',
+    ]
+    userInput = ctx.message.content[5:]
+    splitQuestion = userInput.split('?')
+    splitAnswers = splitQuestion[1].split( )
+    response = str(splitQuestion[0]) + '?\n'
+    await ctx.send(response)
+    j = 0
+    for i in splitAnswers:
+        msg = await ctx.send(emojiList[j] + " " + i)
+        j += 1
+    j = 0
+    for i in splitAnswers:
+        await msg.add_reaction(emojiList[j])
+        j+= 1
+
+# not sure if this is important, but I'll keep it for now
 '''#from https://www.devdungeon.com/content/make-discord-bot-python
 @client.event
 async def on_message(message): #any action that is a respose to a message should go under here
     # we do not want the bot to reply to itself
     if message.author == client.user:
-        return
+        return'''
 
 
-    #random image
-    my_file = open("pictures.txt", "r")
-    content = my_file.read()
-    doggies = content.split("\n")
-    my_file.close()
-
-    if message.content == '!dogo':
-        response = random.choice(doggies)
-        await message.channel.send(response) 
-
-    # create a poll
-    if message.content.startswith("!poll"):
-        # await client.send_message(message.channel, message.content[3:])
-        userInput = message.content[5:]
-        splitQuestion = userInput.split('?')
-        splitAnswers = splitQuestion[1].split( )
-        await message.channel.send(splitQuestion[0]+'?\n')
-        j = 1
-        for a in splitAnswers:
-            if j == 1:
-                msg = await message.channel.send(":one: " + splitAnswers[j-1])
-                j += 1
-            elif j == 2:
-                msg = await message.channel.send(":two: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 3:
-                msg = await message.channel.send(":three: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 4:
-                msg = await message.channel.send(":four: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 5:
-                msg = await message.channel.send(":five: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 6:
-                msg = await message.channel.send(":six: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 7:
-                msg = await message.channel.send(":seven: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 8:
-                msg = await message.channel.send(":eight: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 9:
-                msg = await message.channel.send(":nine: "+ splitAnswers[j-1])
-                j += 1
-            elif j == 10:
-                msg = await message.channel.send(":keycap_ten: "+ splitAnswers[j-1])
-                j += 1
-            else:
-                quit() 
-
-        j = 1
-        for i in splitAnswers:
-            if j == 1:
-                await msg.add_reaction('1️⃣')
-                j += 1
-            elif j == 2:
-                await msg.add_reaction('2️⃣')
-                j += 1
-            elif j == 3:
-                await msg.add_reaction('3️⃣')
-                j += 1
-            elif j == 4:
-                await msg.add_reaction('4️⃣')
-                j += 1
-            elif j == 5:
-                await msg.add_reaction('5️⃣')
-                j += 1
-            elif j == 6:
-                await msg.add_reaction('6️⃣')
-                j += 1
-            elif j == 7:
-                await msg.add_reaction('7️⃣')
-                j += 1
-            elif j == 8:
-                await msg.add_reaction('8️⃣')
-                j += 1
-            elif j == 9:
-                await msg.add_reaction('9️⃣')
-                j += 1
-            elif j == 10:
-                await msg.add_reaction('🔟')
-                j += 1
-            else:
-                quit()'''
-       
 
 bot.run(TOKEN)
