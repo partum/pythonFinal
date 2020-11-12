@@ -1,8 +1,8 @@
 # from https://realpython.com/how-to-make-a-discord-bot-python/
 import os
-import discord, random
+import discord, random, asyncio
 from dotenv import load_dotenv
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 load_dotenv() # this is the stuff in the .env file
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -65,6 +65,13 @@ async def poll(ctx):
     for i in splitAnswers:
         await msg.add_reaction(emojiList[j])
         j+= 1
+
+#set a reminder
+@bot.command(name='remind', help='Set an alert fot yourself in x seconds.')
+async def remind(ctx):
+    x = int(ctx.message.content[8:])
+    await asyncio.sleep(x)
+    await ctx.send(str(ctx.author.mention) + " 🔔 Times up! 🔔")
 
 # not sure if this is important, but I'll keep it for now
 '''#from https://www.devdungeon.com/content/make-discord-bot-python
