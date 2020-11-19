@@ -4,25 +4,44 @@ import discord, random, asyncio
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
 
+#intents are a 1.5 thing that have to be enabled so the bot can listen for events other than commands (or wait for on ready)
+intents = discord.Intents.default() 
+intents.typing = False
+intents.presences = False
+intents.members = True # this is a privileged intent (must be enabled in dev portal as well as here) that allows the bot to check for users joining, leaving, and updating their info
+
+client = commands.Bot(command_prefix=',', intents=intents)
+
 load_dotenv() # this is the stuff in the .env file
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD') # guild = server
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 # confirmation that the bot has connected (not a command)
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
+# modified from https://github.com/jcreek/discord.py-welcome-bot/blob/master/welcome-bot.py
+# send a welcome dm to new users
+newUserMessage = "Welcome!!!!1 Don't break any rules!"
+@bot.event
+async def on_member_join(member): # this is an API specific name
+    print("Recognised that a member called " + member.name + " joined") 
+    try: 
+        await member.send(newUserMessage) 
+        print("Sent message to " + member.name)
+    except:
+        print("Couldn't message " + member.name)
+
 # return random image of dog (from list)
+my_file = open("pictures.txt", "r")
+content = my_file.read()
+doggies = content.split("\n")
+my_file.close()
 @bot.command(name='dogo', help='Returns a random picture of a dog')
 async def dog_pic(ctx):
-    # it would be better if I could figure out how to pass doggies to the command instead of creating the list everytime 🤷
-    my_file = open("pictures.txt", "r")
-    content = my_file.read()
-    doggies = content.split("\n")
-    my_file.close()
     response = random.choice(doggies)
     await ctx.send(response) 
 
@@ -66,7 +85,7 @@ async def poll(ctx):
         await msg.add_reaction(emojiList[j])
         j+= 1
 
-#set a reminder
+#set a reminder (it's really more like an alarm)
 @bot.command(name='remind', help='Set an alert fot yourself in x seconds.')
 async def remind(ctx):
     x = int(ctx.message.content[8:])
