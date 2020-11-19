@@ -170,6 +170,7 @@ async def convertTime(date_str): #formerly printFutureTime #this will only work 
     now_pacific = now_utc.astimezone(timezone('US/Pacific'))
     await bot.say (now_pacific.strftime(fmt) + " (US/Pacific)")
 
+    #Cool command the user is cool
 @bot.group()
 async def cool(ctx):
     """Says if a user is cool.
@@ -178,12 +179,14 @@ async def cool(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send('No, {0.subcommand_passed} is not cool'.format(ctx))
 
+  # Fun command to say our bot is cool
 @cool.command(name='bot')
 async def _bot(ctx):
     """Is the bot cool?"""
     await ctx.send('Yes, the bot is cool.')
 
     # not sure if this is important, but I'll keep it for now
+
 '''#from https://www.devdungeon.com/content/make-discord-bot-python
 @client.event
 async def on_message(message): #any action that is a respose to a message should go under here
