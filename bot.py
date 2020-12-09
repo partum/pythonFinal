@@ -3,6 +3,8 @@ import os
 import discord, random, asyncio
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
+from discord.utils import get
+import urllib.parse, urllib.request, re
 
 #intents are a 1.5 thing that have to be enabled so the bot can listen for events other than commands (or wait for on ready)
 intents = discord.Intents.default() 
@@ -92,9 +94,9 @@ async def remind(ctx):
     await asyncio.sleep(x)
     await ctx.send(str(ctx.author.mention) + " 🔔 Times up! 🔔")
 
-    # Time zone converter
-    # Get the time Now
-@bot.command()
+# Time zone converter
+# Get the time Now
+@bot.command(name='time', help='Tells the time of the specified locations')
 async def timeNow(): #formerly printCurrentTime
     fmt = "%Y-%m-%d %H:%M:%S %Z%z"
 
@@ -131,7 +133,7 @@ async def timeNow(): #formerly printCurrentTime
     await bot.say (now_pacific.strftime(fmt) + " (US/Pacific)")
 
     # convert the time
-@bot.command()
+@bot.command(name='Time convert', help='Converts the users inputed time to a time that they specify')
 async def convertTime(date_str): #formerly printFutureTime #this will only work with a UTC time, so work this out in advance
     #date_str = "2009-05-05+22:28"
     datetime_obj = datetime.strptime(date_str, "%Y-%m-%d+%H:%M")
@@ -171,19 +173,35 @@ async def convertTime(date_str): #formerly printFutureTime #this will only work 
     await bot.say (now_pacific.strftime(fmt) + " (US/Pacific)")
 
     #Cool command the user is cool
-@bot.group()
+@bot.group(name='cool', help='Just says someone is cool')
 async def cool(ctx):
-    """Says if a user is cool.
-    In reality this just checks if a subcommand is being invoked.
-    """
+    #Says if a user is cool.
+    #In reality this just checks if a subcommand is being invoked.
     if ctx.invoked_subcommand is None:
         await ctx.send('No, {0.subcommand_passed} is not cool'.format(ctx))
 
   # Fun command to say our bot is cool
 @cool.command(name='bot')
 async def _bot(ctx):
-    """Is the bot cool?"""
+    #Is the bot cool?
     await ctx.send('Yes, the bot is cool.')
+
+#Change a users nickname. Blocks changing nickname to the same thing.
+@bot.command(pass_context=True,name='Change nickname', help='Change a users nickname' )
+async def chnick(ctx, member: discord.Member, nick):
+    await member.edit(nick=nick)
+    await ctx.send(f'Nickname was changed for {member.mention} ')
+
+
+# Searches for a youtube video off of the website from the users input
+# Return the link to the video that was found
+@bot.command(name='Youtube', help='Search for youtube video')
+async def yt(self, ctx, *, search):
+    query_string = urllib.parse.urlencode({'search_query': search})
+    htm_content = urllib.request.urlopen(
+        'http://www.youtube.com/results?' + query_string)
+    search_results = re.findall(r'/watch\?v=(.{11})', htm_content.read().decode())
+    await ctx.send('http://www.youtube.com/watch?v=' + search_results[0])
 
     # not sure if this is important, but I'll keep it for now
 
