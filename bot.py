@@ -203,13 +203,5 @@ async def yt(self, ctx, *, search):
     search_results = re.findall(r'/watch\?v=(.{11})', htm_content.read().decode())
     await ctx.send('http://www.youtube.com/watch?v=' + search_results[0])
 
-    # not sure if this is important, but I'll keep it for now
-
-'''#from https://www.devdungeon.com/content/make-discord-bot-python
-@client.event
-async def on_message(message): #any action that is a respose to a message should go under here
-    # we do not want the bot to reply to itself
-    if message.author == client.user:
-        return'''
 
 bot.run(TOKEN)
