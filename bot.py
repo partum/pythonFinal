@@ -97,7 +97,7 @@ async def remind(ctx):
 # Time zone converter
 # Get the time Now
 @bot.command(name='time', help='Tells the time of the specified locations')
-async def timeNow(): #formerly printCurrentTime
+async def timeNow(): #printCurrentTime into a format of year month day, to accomdate the range of places
     fmt = "%Y-%m-%d %H:%M:%S %Z%z"
 
     # Current time in UTC
@@ -132,10 +132,9 @@ async def timeNow(): #formerly printCurrentTime
     now_pacific = now_utc.astimezone(timezone('US/Pacific'))
     await bot.say (now_pacific.strftime(fmt) + " (US/Pacific)")
 
-    # convert the time
+    # Convert the time
 @bot.command(name='Time convert', help='Converts the users inputed time to a time that they specify')
-async def convertTime(date_str): #formerly printFutureTime #this will only work with a UTC time, so work this out in advance
-    #date_str = "2009-05-05+22:28"
+async def convertTime(date_str): #Print the converted time, this will only work with a UTC time, prints in format of"2009-05-05+22:28"
     datetime_obj = datetime.strptime(date_str, "%Y-%m-%d+%H:%M")
 
     fmt = "%Y-%m-%d %H:%M %Z%z"
@@ -186,7 +185,8 @@ async def _bot(ctx):
     #Is the bot cool?
     await ctx.send('Yes, the bot is cool.')
 
-#Change a users nickname. Blocks changing nickname to the same thing.
+# Change a users nickname. Blocks changing nickname to the same thing.
+# Returns the users discord name if the name change was sucsessful 
 @bot.command(pass_context=True,name='Change nickname', help='Change a users nickname' )
 async def chnick(ctx, member: discord.Member, nick):
     await member.edit(nick=nick)
@@ -197,9 +197,11 @@ async def chnick(ctx, member: discord.Member, nick):
 # Return the link to the video that was found
 @bot.command(name='Youtube', help='Search for youtube video')
 async def yt(self, ctx, *, search):
+    # Parses the search for the users input and searches it on youtube.com
+    # Once it searches it brings back the result closest to the query
+    # Posts the link into the channel the user input the code
     query_string = urllib.parse.urlencode({'search_query': search})
-    htm_content = urllib.request.urlopen(
-        'http://www.youtube.com/results?' + query_string)
+    htm_content = urllib.request.urlopen('http://www.youtube.com/results?' + query_string)
     search_results = re.findall(r'/watch\?v=(.{11})', htm_content.read().decode())
     await ctx.send('http://www.youtube.com/watch?v=' + search_results[0])
 
