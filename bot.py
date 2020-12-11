@@ -101,75 +101,75 @@ async def timeNow(): #printCurrentTime into a format of year month day, to accom
     fmt = "%Y-%m-%d %H:%M:%S %Z%z"
 
     # Current time in UTC
-    now_utc = datetime.now(timezone('UTC'))
-    await bot.say (now_utc.strftime(fmt) + " (UTC)")
+    nowUtc = datetime.now(timezone('UTC'))
+    await bot.say (nowUtc.strftime(fmt) + " (UTC)")
 
     # Convert to Europe/London time zone
-    now_london = now_utc.astimezone(timezone('Europe/London'))
-    await bot.say (now_london.strftime(fmt) + " (London)")
+    nowLondon = nowUtc.astimezone(timezone('Europe/London'))
+    await bot.say (nowLondon.strftime(fmt) + " (London)")
 
     # Convert to Europe/Berlin time zone
-    now_berlin = now_utc.astimezone(timezone('Europe/Berlin'))
-    await bot.say (now_berlin.strftime(fmt) + " (Berlin)")
+    nowBerlin = nowUtc.astimezone(timezone('Europe/Berlin'))
+    await bot.say (nowBerlin.strftime(fmt) + " (Berlin)")
 
     # Convert to CET time zone
-    now_cet = now_utc.astimezone(timezone('CET'))
-    await bot.say (now_cet.strftime(fmt) + " (CET)")
+    nowCet = nowUtc.astimezone(timezone('CET'))
+    await bot.say (nowCet.strftime(fmt) + " (CET)")
 
     # Convert to Israel time zone
-    now_israel = now_utc.astimezone(timezone('Israel'))
-    await bot.say (now_israel.strftime(fmt) + " (Israel)")
+    nowIsrael = nowUtc.astimezone(timezone('Israel'))
+    await bot.say (nowIsrael.strftime(fmt) + " (Israel)")
 
     # Convert to Canada/Eastern time zone
-    now_canada_east = now_utc.astimezone(timezone('Canada/Eastern'))
-    await bot.say (now_canada_east.strftime(fmt) + " (Canada/Eastern)")
+    nowCanadaEast = nowUtc.astimezone(timezone('Canada/Eastern'))
+    await bot.say (nowCanadaEast.strftime(fmt) + " (Canada/Eastern)")
 
     # Convert to US/Central time zone
-    now_central = now_utc.astimezone(timezone('US/Central'))
-    await bot.say (now_central.strftime(fmt) + " (US/Central)")
+    nowCentral = nowUtc.astimezone(timezone('US/Central'))
+    await bot.say (nowCentral.strftime(fmt) + " (US/Central)")
 
     # Convert to US/Pacific time zone
-    now_pacific = now_utc.astimezone(timezone('US/Pacific'))
-    await bot.say (now_pacific.strftime(fmt) + " (US/Pacific)")
+    nowPacific = nowUtc.astimezone(timezone('US/Pacific'))
+    await bot.say (nowPacific.strftime(fmt) + " (US/Pacific)")
 
     # Convert the time
 @bot.command(name='Time convert', help='Converts the users inputed time to a time that they specify')
 async def convertTime(date_str): #Print the converted time, this will only work with a UTC time, prints in format of"2009-05-05+22:28"
-    datetime_obj = datetime.strptime(date_str, "%Y-%m-%d+%H:%M")
+    datetimeObj = datetime.strptime(date_str, "%Y-%m-%d+%H:%M")
 
     fmt = "%Y-%m-%d %H:%M %Z%z"
 
     # Current time in UTC
-    now_utc = datetime_obj.replace(tzinfo=timezone('UTC'))
-    await bot.say (now_utc.strftime(fmt) + " (UTC)")
+    nowUtc = datetimeObj.replace(tzinfo=timezone('UTC'))
+    await bot.say (nowUtc.strftime(fmt) + " (UTC)")
 
     # Convert to Europe/London time zone
-    now_london = now_utc.astimezone(timezone('Europe/London'))
-    await bot.say (now_london.strftime(fmt) + " (London)")
+    nowLondon = nowUtc.astimezone(timezone('Europe/London'))
+    await bot.say (nowLondon.strftime(fmt) + " (London)")
 
     # Convert to Europe/Berlin time zone
-    now_berlin = now_utc.astimezone(timezone('Europe/Berlin'))
-    await bot.say (now_berlin.strftime(fmt) + " (Berlin)")
+    nowBerlin = nowUtc.astimezone(timezone('Europe/Berlin'))
+    await bot.say (nowBerlin.strftime(fmt) + " (Berlin)")
 
     # Convert to CET time zone
-    now_cet = now_utc.astimezone(timezone('CET'))
-    await bot.say (now_cet.strftime(fmt) + " (CET)")
+    nowCet = nowUtc.astimezone(timezone('CET'))
+    await bot.say (nowCet.strftime(fmt) + " (CET)")
 
     # Convert to Israel time zone
-    now_israel = now_utc.astimezone(timezone('Israel'))
-    await bot.say (now_israel.strftime(fmt) + " (Israel)")
+    nowIsrael = nowUtc.astimezone(timezone('Israel'))
+    await bot.say (nowIsrael.strftime(fmt) + " (Israel)")
 
     # Convert to Canada/Eastern time zone
-    now_canada_east = now_utc.astimezone(timezone('Canada/Eastern'))
-    await bot.say (now_canada_east.strftime(fmt) + " (Canada/Eastern)")
+    nowCanadaEast = nowUtc.astimezone(timezone('Canada/Eastern'))
+    await bot.say (nowCanadaEast.strftime(fmt) + " (Canada/Eastern)")
 
     # Convert to US/Central time zone
-    now_central = now_utc.astimezone(timezone('US/Central'))
-    await bot.say (now_central.strftime(fmt) + " (US/Central)")
+    nowCentral = nowUtc.astimezone(timezone('US/Central'))
+    await bot.say (nowCentral.strftime(fmt) + " (US/Central)")
 
     # Convert to US/Pacific time zone
-    now_pacific = now_utc.astimezone(timezone('US/Pacific'))
-    await bot.say (now_pacific.strftime(fmt) + " (US/Pacific)")
+    nowPacific = nowUtc.astimezone(timezone('US/Pacific'))
+    await bot.say (nowPacific.strftime(fmt) + " (US/Pacific)")
 
     #Cool command the user is cool
 @bot.group(name='cool', help='Just says someone is cool')
@@ -200,10 +200,10 @@ async def yt(self, ctx, *, search):
     # Parses the search for the users input and searches it on youtube.com
     # Once it searches it brings back the result closest to the query
     # Posts the link into the channel the user input the code
-    query_string = urllib.parse.urlencode({'search_query': search})
-    htm_content = urllib.request.urlopen('http://www.youtube.com/results?' + query_string)
-    search_results = re.findall(r'/watch\?v=(.{11})', htm_content.read().decode())
-    await ctx.send('http://www.youtube.com/watch?v=' + search_results[0])
+    queryString = urllib.parse.urlencode({'search_query': search})
+    htmContent = urllib.request.urlopen('http://www.youtube.com/results?' + queryString)
+    searchResults = re.findall(r'/watch\?v=(.{11})', htmContent.read().decode())
+    await ctx.send('http://www.youtube.com/watch?v=' + searchResults[0])
 
 
 bot.run(TOKEN)
